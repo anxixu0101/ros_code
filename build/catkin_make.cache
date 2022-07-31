@@ -1,0 +1,2 @@
+test_ros
+-DCATKIN_DEVEL_PREFIX=/home/anxixu/anxixu/ros_code/msg_communication/devel -DCMAKE_INSTALL_PREFIX=/home/anxixu/anxixu/ros_code/msg_communication/install -G Unix Makefiles
