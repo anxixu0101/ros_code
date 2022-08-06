@@ -1,2 +1,6 @@
-/build/
+/grid_map/build/
+/grid_map/devel/
+/msg_communication/build/
+/msg_communication/devel/
 /devel/
+*vscode
