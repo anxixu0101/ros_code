@@ -10,7 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package( Threads )
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 

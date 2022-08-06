@@ -1,6 +1,19 @@
+/**
+ * @file occupancy_grid_publish.cpp
+ * @author anxixu
+ * @brief 
+ * @version 0.1
+ * @date 2022-08-06
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "ros/ros.h"
 #include "sensor_msgs/LaserScan.h"
 #include "nav_msgs/OccupancyGrid.h"
+
+
+
 
 int main(int argc, char * argv[]) {
 

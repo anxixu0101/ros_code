@@ -5,6 +5,9 @@
 ## msg_communication
 ros发送/接收话题代码，接收话题时调用了回调函数，应用了多线程同时运行
 
+## grid_map
+简单的发布nav_msgs::OccupancyGrid数据格式的栅格地图，可以在rviz下订阅/map话题并显示观看
+
 
 ------------------------------------
 
