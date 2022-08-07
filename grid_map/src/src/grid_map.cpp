@@ -12,7 +12,33 @@ void GridMap::chatterCallback(const sensor_msgs::LaserScan::ConstPtr &msg)
 
 void GridMap::createOccupancy(const sensor_msgs::LaserScan::ConstPtr &msg)
 {
-    
+
+    MapInitialize();
+
+    for (auto i = 0; i < msg->ranges.size(); i++)
+    {
+        double laser_x = msg->ranges[i] * sin(msg->angle_min + i * msg->angle_increment);
+        double laser_y = msg->ranges[i] * sin(msg->angle_min + i * msg->angle_increment);
+        GridIndex map_index = convertWorldToGridIndex(laser_x, laser_y);
+        std::vector<GridMap::GridIndex> free_index =
+            traceLine(0, 0, map_index.x, map_index.y); //找到空闲栅格
+
+        for (int k = 0; k < free_index.size(); k++)
+        {
+            GridIndex tmpIndex = free_index[k];
+            //将空闲栅格的栅格序号，转化到数组序号,该数组用于存储每一个栅格的数据
+            int linearIndex = gridIndexToLinearIndex(tmpIndex);
+            //取出该栅格代表的数据
+            int data = map_ptr_[linearIndex];
+            //根据栅格空闲规则，执行data += mapParams.log_free;
+            if (data > 0)                   //默认data=50
+                data += grid_map_param_.log_free; // log_free=-1，data将变小
+            else
+                data = 0;
+            //给该空闲栅格赋新值，最小为0
+            map_ptr_[linearIndex] = data;
+        }
+    }
 }
 
 std::vector<GridMap::GridIndex> GridMap::traceLine(int x_start, int y_start,
@@ -78,4 +104,33 @@ std::vector<GridMap::GridIndex> GridMap::traceLine(int x_start, int y_start,
 
         grid_index_vector.push_back(grid_index);
     }
+}
+
+void GridMap::MapInitialize()
+{
+
+    map_ptr_ = new unsigned char[grid_map_param_.width * grid_map_param_.height];
+    for (int i = 0; i < grid_map_param_.width * grid_map_param_.height; i++)
+        map_ptr_[i] = 50; //地图概率初始化
+}
+
+GridMap::GridIndex GridMap::convertWorldToGridIndex(double x, double y)
+{
+    GridMap::GridIndex index;
+    index.x = std::ceil((x - grid_map_param_.origin_x) / grid_map_param_.resolution) + grid_map_param_.offset_x;
+    index.y = std::ceil((y - grid_map_param_.origin_y) / grid_map_param_.resolution) + grid_map_param_.offset_y;
+
+    return index;
+}
+
+int GridMap::gridIndexToLinearIndex(GridIndex index)
+{
+    int linear_index;
+    linear_index = index.y + index.x * grid_map_param_.width;
+}
+
+
+void GridMap::publishMap()
+{
+
 }
