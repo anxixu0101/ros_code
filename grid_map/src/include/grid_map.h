@@ -30,20 +30,21 @@ public:
 
     struct MapParams
     {
-        double log_occ = 1;       //击中栅格概率
-        double log_free = -1;     //空闲栅格概率
-        double resolution = 0.05; //地图分辨率
-        double origin_x = 0 ;      //地图起始点
-        double origin_y = 0;
-        int height = 500; //地图长和宽
-        int width = 500;
-        int offset_x=0; //机器人起点
-        int offset_y=0; 
+        double log_occ ;       //击中栅格概率
+        double log_free ;     //空闲栅格概率
+        double resolution ; //地图分辨率
+        double origin_x  ;      //地图起始点
+        double origin_y ;
+        int height ; //地图长和宽
+        int width ;
+        int offset_x; //机器人起点
+        int offset_y; 
     };
 
 public:
     GridMap();
     void static chatterCallback(const sensor_msgs::LaserScan::ConstPtr &msg);
+    void static middleFunction(const sensor_msgs::LaserScan::ConstPtr &msg,GridMap *grid);
     void createOccupancy(const sensor_msgs::LaserScan::ConstPtr &msg);
     std::vector<GridIndex> traceLine(int x_start, int y_start,
                                      int x_end, int y_end); 
@@ -52,6 +53,7 @@ public:
     GridIndex convertWorldToGridIndex(double x,double y); //世界坐标系转栅格坐标系
     int gridIndexToLinearIndex(GridIndex index);
     void publishMap();
+    void deleteMap();
 
 private:
     ros::NodeHandle nh_; //创建句柄节点
@@ -59,5 +61,6 @@ private:
     ros::Publisher map_pub_;
     unsigned char* map_ptr_; //声明地图指针
     GridMap::MapParams grid_map_param_; //声明地图对象
+    static GridMap* grid_;
     
 };
