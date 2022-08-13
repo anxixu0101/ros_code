@@ -14,7 +14,8 @@
 ## grid_map
 > 简单的发布nav_msgs::OccupancyGrid数据格式的栅格地图，可以在rviz下订阅/map话题并显示观看.代码是在小白学移动机器人发布的栅格地图代码上修改的.可以实时接收雷达数据并转换成栅格地图发布出来.使用的bag包放在了rosbag文件夹下
 
-[![vt8pQS.gif](https://s1.ax1x.com/2022/08/13/vt8pQS.gif)](https://imgtu.com/i/vt8pQS)
+
+![](https://github.com/anxixu0101/ros_code/blob/main/image/ros-pub.gif)
 
 
 
