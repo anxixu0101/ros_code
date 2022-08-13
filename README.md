@@ -8,13 +8,13 @@
 ## msg_communication
 > ros发送/接收话题代码，接收话题时调用了回调函数，为了让代码有一点点不同，这里我加入了高并发，应用了多线程同时运行。
 
-![](ros-pub.gif)
+![](/../../../../../../../image/ros-pub.gif)
 
 
 ## grid_map
 > 简单的发布nav_msgs::OccupancyGrid数据格式的栅格地图，可以在rviz下订阅/map话题并显示观看.代码是在小白学移动机器人发布的栅格地图代码上修改的.可以实时接收雷达数据并转换成栅格地图发布出来.使用的bag包放在了rosbag文件夹下
 
-![](view.gif)
+![](https://github.com/anxixu0101/ros_code/tree/main/image/view.gif)
 
 
 
@@ -30,10 +30,10 @@ Outside the SRC folder, catkin_make can be compiled. The generated executable pr
 ## msg_communication
 > Ros sends/receives the topic code. When receiving the topic, the callback function is called, and multiple threads are applied simultaneously
 
-![](ros-pub.gif)
+![](https://github.com/anxixu0101/ros_code/tree/main/image/ros-pub.gif)
 
 ## grid_map
 > Simple post of a raster map in Nav_MSgs ::OccupancyGrid data format that can be subscribed to/Map topics under RVIz and displayed for viewing. The code is modified on the raster map code released by the Xiaobaixue mobile robot. Radar data can be received in real time and converted into raster maps for publication. The bag package used is placed in the rosbag folder
 
-![](view.gif)
+![](https://github.com/anxixu0101/ros_code/tree/main/image/view.gif)
 
