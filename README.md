@@ -32,3 +32,8 @@ Outside the SRC folder, catkin_make can be compiled. The generated executable pr
 
 ![](ros-pub.gif)
 
+## grid_map
+> Simple post of a raster map in Nav_MSgs ::OccupancyGrid data format that can be subscribed to/Map topics under RVIz and displayed for viewing. The code is modified on the raster map code released by the Xiaobaixue mobile robot. Radar data can be received in real time and converted into raster maps for publication. The bag package used is placed in the rosbag folder
+
+![](view.gif)
+
