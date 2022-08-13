@@ -1,3 +1,12 @@
+/*
+ * @Description: 点云转栅格的基本程序
+ * @Version: 2.0
+ * @Author: Virtual虚函数
+ * @Date: 2022-08-06 14:59:01
+ * @LastEditors: Virtual虚函数
+ * @LastEditTime: 2022-08-13 11:33:54
+ */
+
 #include "../include/grid_map.h"
 #include <type_traits>
 
@@ -6,7 +15,7 @@ GridMap::GridMap()
 {
     ROS_INFO("Start to Listen Laser");
     grid_ = this;
-    
+
     sub_ = nh_.subscribe<sensor_msgs::LaserScan>("/scan", 1000, &GridMap::chatterCallback);
     map_pub_ = nh_.advertise<nav_msgs::OccupancyGrid>("laser_map", 1, true);
 }
@@ -29,13 +38,13 @@ void GridMap::createOccupancy(const sensor_msgs::LaserScan::ConstPtr &msg)
         double laser_x = msg->ranges[i] * sin(msg->angle_min + i * msg->angle_increment);
         double laser_y = msg->ranges[i] * cos(msg->angle_min + i * msg->angle_increment);
 
-        if (laser_x > 1 && laser_y > 1 && laser_x < 10 && laser_y < 10)
+        if (laser_x > 0 && laser_y > 0 && laser_x < 50 && laser_y < 50)
         {
 
             GridIndex map_index = convertWorldToGridIndex(laser_x, laser_y);
 
             std::vector<GridMap::GridIndex> free_index =
-                traceLine(100, 100, map_index.x, map_index.y); //找到空闲栅格
+                traceLine( grid_map_param_.offset_x,  grid_map_param_.offset_y, map_index.x, map_index.y); //找到空闲栅格
 
             for (int k = 0; k < free_index.size(); k++)
             {
@@ -45,17 +54,13 @@ void GridMap::createOccupancy(const sensor_msgs::LaserScan::ConstPtr &msg)
                 //取出该栅格代表的数据
                 if (linearIndex < grid_map_param_.height * grid_map_param_.width)
                 {
-
-                    int data = map_ptr_[linearIndex];
-                    //根据栅格空闲规则，执行data += grid_map_param_.log_free;
-                    if (data > 0)                         //默认data=50
-                        data += grid_map_param_.log_free; // log_free=-1，data将变小
-                    else
-                        data = 0;
-                    //给该空闲栅格赋新值，最小为0
-                    map_ptr_[linearIndex] = data;
+                    map_ptr_[linearIndex] = 0;
                 }
             }
+            int occupy_index = gridIndexToLinearIndex(map_index);
+            int data = map_ptr_[occupy_index];
+            data = 100;
+            map_ptr_[occupy_index] = data;
         }
     }
 
@@ -136,8 +141,8 @@ void GridMap::MapInitialize()
     grid_map_param_.resolution = 0.05; //地图分辨率
     grid_map_param_.origin_x = 0;      //地图起始点
     grid_map_param_.origin_y = 0;
-    grid_map_param_.height = 500; //地图长和宽
-    grid_map_param_.width = 500;
+    grid_map_param_.height = 300; //地图长和宽
+    grid_map_param_.width = 300;
     grid_map_param_.offset_x = 0; //机器人起点
     grid_map_param_.offset_y = 0;
 
@@ -157,7 +162,7 @@ GridMap::GridIndex GridMap::convertWorldToGridIndex(double x, double y)
 int GridMap::gridIndexToLinearIndex(GridIndex index)
 {
     int linear_index;
-    linear_index = index.y + index.x * 500;
+    linear_index = index.y + index.x * grid_map_param_.width;
 }
 
 void GridMap::publishMap()
@@ -165,9 +170,6 @@ void GridMap::publishMap()
     nav_msgs::OccupancyGrid ros_map;
 
     ros_map.info.resolution = grid_map_param_.resolution;
-    ros_map.info.origin.position.x = 0.0;
-    ros_map.info.origin.position.y = 0.0;
-    ros_map.info.origin.position.z = 0.0;
     ros_map.info.origin.orientation.x = 0.0;
     ros_map.info.origin.orientation.y = 0.0;
     ros_map.info.origin.orientation.z = 0.0;
@@ -188,7 +190,7 @@ void GridMap::publishMap()
         }
         else if (map_ptr_[i] < 50) //空闲栅格
         {
-            ros_map.data[i] = map_ptr_[i]; // cartographer方式
+            ros_map.data[i] = map_ptr_[i]; 
         }
         else if (map_ptr_[i] > 50) //击中栅格
         {

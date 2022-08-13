@@ -1,13 +1,12 @@
-/**
- * @file grid_map.h
- * @author anxixu
- * @brief
- * @version 0.1
- * @date 2022-08-06
- *
- * @copyright Copyright (c) 2022
- *
+/*
+ * @Description: 点云转栅格的头文件
+ * @Version: 2.0
+ * @Author: Virtual虚函数
+ * @Date: 2022-08-06 14:58:51
+ * @LastEditors: Virtual虚函数
+ * @LastEditTime: 2022-08-13 11:34:19
  */
+
 #include "ros/ros.h"
 #include "sensor_msgs/LaserScan.h"
 #include "nav_msgs/OccupancyGrid.h"
