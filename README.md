@@ -1,4 +1,5 @@
 
+
 # ros_code
 一些关于ros/C++从入门，进阶，到修仙的代码,部分代码也是为了以后的激光/视觉SLAM服务。代码多采用C++，虽然我水平有限，但我会尽量让自己的代码保持优雅。不定时更新
 
@@ -15,7 +16,11 @@
 
 [![vt8pQS.gif](https://s1.ax1x.com/2022/08/13/vt8pQS.gif)](https://imgtu.com/i/vt8pQS)
 
+## pcd_segment
+> 对点云进行简单的直线提取和区域分割
+[![xBAi9J.png](https://s1.ax1x.com/2022/10/16/xBAi9J.png)](https://imgse.com/i/xBAi9J)
 
+[![xBAF39.png](https://s1.ax1x.com/2022/10/16/xBAF39.png)](https://imgse.com/i/xBAF39)
 
 ------------------------------------
 
