@@ -4,7 +4,7 @@
  * @Author: Virtual虚函数
  * @Date: 2022-10-16 08:43:24
  * @LastEditors: Virtual虚函数
- * @LastEditTime: 2022-10-16 08:58:03
+ * @LastEditTime: 2022-12-18 11:46:30
  */
 
 
@@ -26,7 +26,8 @@
 #include <pcl/io/pcd_io.h>
 
 #include "../feature_check/feature_track.h" 
-
+#include "data_preprocess.h"
+#include <memory>
 struct LaserData
 {
    double x;
@@ -64,7 +65,7 @@ class My_Filter {
         ros::Subscriber pclCloud_sub_;
 
    private:
-       FeatureTrack<pcl::PointCloud<pcl::PointXYZ>::Ptr> feature_;
-
+       std::unique_ptr<FeatureTrack<pcl::PointCloud<pcl::PointXYZ>::Ptr>> feature_;
+       std::unique_ptr<DataProcess<pcl::PointCloud<pcl::PointXYZ>::Ptr>> data_process_;
 };
 #endif

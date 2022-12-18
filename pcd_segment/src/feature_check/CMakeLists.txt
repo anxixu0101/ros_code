@@ -10,7 +10,7 @@ include_directories("/usr/include/eigen3")
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 # 如果不需要点云显示功能 把此行注销
-add_definitions(-Dviewer_switch)
+#add_definitions(-Dviewer_switch)
 
 add_definitions(${PCL_DEFINITIONS})
 add_library(feature_check feature_track.cpp)

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(tomato-slam)
 SET(CMAKE_BUILD_TYPE “Debug”)
-
+set(CMAKE_C_STANDARD 17)
 
 find_package(catkin REQUIRED COMPONENTS 
   roscpp
@@ -39,6 +39,7 @@ add_definitions(${PCL_DEFINITIONS})
 add_executable(lidar-check
   src/main.cpp
   src/laser_to_pcl.cpp
+  src/data_process.cpp
 )
 target_link_libraries(lidar-check
   ${catkin_LIBRARIES}

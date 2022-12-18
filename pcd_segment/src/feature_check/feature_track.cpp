@@ -63,7 +63,7 @@ bool sort_point_index(FeatureTrack<pcl::PointCloud<pcl::PointXYZ>::Ptr>::PointIn
 
 //区域分割
 template <typename feature_T>
-void FeatureTrack<feature_T>::regionSegmentation(const feature_T& laser_point,
+feature_T FeatureTrack<feature_T>::regionSegmentation(const feature_T& laser_point,
 									  double max_distance)
 {
 	std::cout<<"开始执行区域分割！！"<<std::endl;
@@ -100,20 +100,22 @@ void FeatureTrack<feature_T>::regionSegmentation(const feature_T& laser_point,
 	}
 	std::sort(laser_area.begin(), laser_area.end(), myfunction);
 
-	pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
+	
 	pcl::PointCloud<pcl::PointXYZ>::Ptr area_1(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr area_2(new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr area_3(new pcl::PointCloud<pcl::PointXYZ>);
 	//取3个点云数量最多的连通区域来代表这帧点云
 	if (laser_area.size() > 3)
 	{
-
+        pcl::PointCloud<pcl::PointXYZ>::Ptr after_segmentation(new pcl::PointCloud<pcl::PointXYZ>);
 		area_1 = laser_area[0][0];
 		area_2 = laser_area[1][0];
 		area_3 = laser_area[2][0];
+		*after_segmentation = *area_1+*area_2+*area_3;
 		pcl::PointCloud<pcl::PointXYZ>::Ptr inflection_point(new pcl::PointCloud<pcl::PointXYZ>);
 		inflection_point=inflectionPointTrack(std::move(area_2));
 		#ifdef viewer_switch
+		pcl::visualization::PCLVisualizer::Ptr viewer(new pcl::visualization::PCLVisualizer("3D Viewer"));
 		viewer->addPointCloud<pcl::PointXYZ>(laser_point, "cloud");
 		viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_COLOR, 0, 0, 0, "cloud");
 		viewer->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "cloud");
@@ -139,12 +141,15 @@ void FeatureTrack<feature_T>::regionSegmentation(const feature_T& laser_point,
 			viewer->spinOnce(100);
 		}
        #endif
-	   
+	    
 		laser_area.clear();
+		return after_segmentation;
 	}
 	else
 	{
 		std::cout<<"点云较为稠密，间断点较少"<<std::endl;
+		return laser_point;
+		
 	}
 }
 

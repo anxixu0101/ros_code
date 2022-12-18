@@ -3,7 +3,7 @@
  * @Version: 1.0
  * @Autor: David.an
  * @Date: 2022-07-15 17:44:22
- * @LastEditors: David.an
+ * @LastEditors: Virtual虚函数
  */
 
 #ifndef FEATURE_TRACK_
@@ -32,7 +32,7 @@ public:
     //直线提取
     void lineTrack(feature_T& cloud);
     //区域分割
-    void regionSegmentation(const feature_T& laser_point,
+    feature_T regionSegmentation(const feature_T& laser_point,
                             double max_distance);
     //拐点提取
     feature_T inflectionPointTrack(const feature_T&& laser_point);
