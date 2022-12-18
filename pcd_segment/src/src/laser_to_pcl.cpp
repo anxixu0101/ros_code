@@ -4,7 +4,7 @@
  * @Author: Virtual虚函数
  * @Date: 2022-10-16 08:43:24
  * @LastEditors: Virtual虚函数
- * @LastEditTime: 2022-12-18 11:50:08
+ * @LastEditTime: 2022-12-18 13:38:54
  */
 
 #include "laser_to_pcl.h"
@@ -18,8 +18,10 @@ My_Filter::My_Filter()
 
   //发布LaserScan转换为PointCloud2的后的数据
   point_cloud_publisher_ = node_.advertise<sensor_msgs::PointCloud2>("/pcd_output", 100, false);
-   
+
+  feature_ =  std::make_unique<FeatureTrack<pcl::PointCloud<pcl::PointXYZ>::Ptr>>();
   data_process_ = std::make_unique<DataProcess<pcl::PointCloud<pcl::PointXYZ>::Ptr>>();
+  local_builder_ = std::make_unique<LocalBuilder<pcl::PointCloud<pcl::PointXYZ>::Ptr>>();
 }
 
 void My_Filter::scanCallback(const sensor_msgs::LaserScan::ConstPtr &scan)
@@ -52,8 +54,12 @@ void My_Filter::scanCallback_2(const sensor_msgs::LaserScan::ConstPtr &scan)
   {
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcd_1(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcd_2(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr out_put(new pcl::PointCloud<pcl::PointXYZ>);
     pcd_1 =  feature_->regionSegmentation(frame_1,0.1);
     pcd_2 =  feature_->regionSegmentation(frame_2,0.1);
+    local_builder_->icpScanToScan(pcd_1,pcd_2,out_put,0.01,100);
+    pcl::io::savePCDFileASCII("cloud.pcd",*out_put);
+
   }
 
 

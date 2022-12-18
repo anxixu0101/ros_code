@@ -24,13 +24,17 @@ set(FEATURE_LIB ${CMAKE_CURRENT_SOURCE_DIR}/feature_check/lib)
 ADD_SUBDIRECTORY(feature_check)
 link_directories(${FEATURE_LIB})
 
+# Add:前端匹配库
+set(LOCAL_LIB ${CMAKE_CURRENT_SOURCE_DIR}/front_end/lib)
+ADD_SUBDIRECTORY(front_end)
+link_directories(${LOCAL_LIB})
 
-
-include_directories(include feature_check)
+include_directories(include feature_check front_end)
 include_directories(
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
   ${FEATURE_LIB}
+  ${LOCAL_LIB}
 )
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
@@ -44,7 +48,9 @@ add_executable(lidar-check
 target_link_libraries(lidar-check
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
+  liblocal-builder.so
   libfeature_check.so
+  #
 )
 
 

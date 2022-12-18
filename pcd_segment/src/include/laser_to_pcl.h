@@ -4,7 +4,7 @@
  * @Author: Virtual虚函数
  * @Date: 2022-10-16 08:43:24
  * @LastEditors: Virtual虚函数
- * @LastEditTime: 2022-12-18 11:46:30
+ * @LastEditTime: 2022-12-18 13:23:27
  */
 
 
@@ -26,6 +26,7 @@
 #include <pcl/io/pcd_io.h>
 
 #include "../feature_check/feature_track.h" 
+#include "../front_end/local_builder.hpp"
 #include "data_preprocess.h"
 #include <memory>
 struct LaserData
@@ -67,5 +68,6 @@ class My_Filter {
    private:
        std::unique_ptr<FeatureTrack<pcl::PointCloud<pcl::PointXYZ>::Ptr>> feature_;
        std::unique_ptr<DataProcess<pcl::PointCloud<pcl::PointXYZ>::Ptr>> data_process_;
+       std::unique_ptr<LocalBuilder<pcl::PointCloud<pcl::PointXYZ>::Ptr>> local_builder_;
 };
 #endif
